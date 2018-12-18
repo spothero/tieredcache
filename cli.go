@@ -20,8 +20,8 @@ import (
 	"github.com/spf13/pflag"
 )
 
-// RegisterViperFlags registers RemoteCache flags with Viper CLIs
-func (rcc *RemoteCacheConfig) RegisterViperFlags(flags *pflag.FlagSet) {
+// RegisterFlags registers RemoteCache pflags
+func (rcc *RemoteCacheConfig) RegisterFlags(flags *pflag.FlagSet) {
 	defaultURLs := []string{
 		"127.0.0.1:7000",
 		"127.0.0.1:7001",
@@ -36,17 +36,17 @@ func (rcc *RemoteCacheConfig) RegisterViperFlags(flags *pflag.FlagSet) {
 	flags.BoolVar(&rcc.TracingEnabled, "remote-cache-tracing-enabled", true, "Enable tracing on remote cache")
 }
 
-// RegisterViperFlags registers LocalCache flags with Viper CLIs
-func (lcc *LocalCacheConfig) RegisterViperFlags(flags *pflag.FlagSet) {
+// RegisterFlags registers LocalCache pflags
+func (lcc *LocalCacheConfig) RegisterFlags(flags *pflag.FlagSet) {
 	flags.DurationVar(&lcc.Eviction, "cache-eviction", time.Duration(time.Second*5), "How frequently to evict from cache")
 	flags.DurationVar(&lcc.TTL, "cache-ttl", time.Duration(time.Minute*60), "Cache Entry TTL for local cache")
 	flags.UintVar(&lcc.Shards, "cache-shards", 0, "Number of shards for local cluster. 0 means the program decides itself. Must be power of 2.")
 	flags.BoolVar(&lcc.TracingEnabled, "local-cache-tracing-enabled", true, "Enable tracing on local cache")
 }
 
-// RegisterViperFlags registers TieredCache flags with Viper CLIs
-func (tcc *TieredCacheConfig) RegisterViperFlags(flags *pflag.FlagSet) {
-	tcc.RemoteConfig.RegisterViperFlags(flags)
-	tcc.LocalConfig.RegisterViperFlags(flags)
+// RegisterFlags registers TieredCache pflags
+func (tcc *TieredCacheConfig) RegisterFlags(flags *pflag.FlagSet) {
+	tcc.RemoteConfig.RegisterFlags(flags)
+	tcc.LocalConfig.RegisterFlags(flags)
 	flags.BoolVar(&tcc.TracingEnabled, "tiered-cache-tracing-enabled", true, "Enable tracing on tiered cache")
 }
